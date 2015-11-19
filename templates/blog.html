@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+    </title>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
+    <script src="{% static 'script/jquery.js' %}"></script>
+</head>
+<body id="main">
+{% include "modal_window.html" %}
+{% block header %}
+<div class="header">
+    <div class="header_left_button_group">
+        <div class="hr_button"><a href="" id="main_Page">Main Page</a></div>
+    </div>
+
+    <div class="additional_button" id="registration"><a href="">Registration</a></div>
+    <div class="additional_button" id="login"><a href="">Login</a></div>
+
+    <div class="header_right_button_group">
+        <div class="hl_button"></div>
+        <div class="hl_button"></div>
+        <div class="hl_button "><a href="">Search</a></div>
+        <div class="hl_button"></div>
+    </div>
+</div>
+<div class="search">
+    <input type="text" id="search_text">
+
+    <div class="search_button"><a href="">Search</a></div>
+    <div class="sorted">Sorted</div>
+    <div class="sort_for_date"><a href="">Date</a></div>
+</div>
+{% endblock %}
+
+{% block body %}
+<div id="body_action">
+    {% include "blog_body.html" %}
+</div>
+{% endblock %}
+<div class="pagination" onclick="return false">
+    <ul>
+        {% for page in pagination_count %}
+        <li><a href="">{{page}}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% block footer %}
+<div class="footer">
+    <a href="" id="cool_click">Cool Buttton</a>
+</div>
+{% endblock %}
+</body>
+{% block script %}
+<script type="text/javascript" src="{% static 'script/js2.js' %}"></script>
+<script type="text/javascript" src="{% static 'script/js.js' %}"></script>
+{% endblock %}
+</html>

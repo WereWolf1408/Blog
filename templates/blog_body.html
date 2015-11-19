@@ -1,0 +1,21 @@
+{% for obj in publication%}
+<div class="body">
+    <div class="body_header">
+        <h3>Title: {{obj.pub_title}}</h3>
+    </div>
+    <div class="body_post_image">
+        {% load staticfiles %}
+        <img src="{% static 'image/'%}{{obj.pub_image}}">
+    </div>
+    <div class="body_post_text">
+        <span>Description: </span>
+        {{ obj.pub_description }}
+    </div>
+    <div class="body_footer">
+        <h3>Date:</h3>
+        {{obj.pub_date_created}}
+        <a href="" onclick="return false" name={{obj.id}}>More</a>
+        {{pub.enot}}
+    </div>
+</div>
+{% endfor %}

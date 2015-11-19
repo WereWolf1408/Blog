@@ -1,0 +1,12 @@
+{% for obj in coments %}
+<div class="coment_field">
+    <div class="cmf_image">
+        <a href=""></a>
+        <label>data</label>
+    </div>
+    <div class="cmf_text">
+        <label>Date:</label>
+        <p>{{obj.coment_text}}</p>
+    </div>
+</div>
+{% endfor %}

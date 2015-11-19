@@ -1,0 +1,36 @@
+{% for obj in publication %}
+<div class="body_more">
+    <h2>{{obj.pub_title}}</h2>
+    <div class="bm_text">
+        <p></p>
+    </div>
+    <div class="horiz_line1"></div>
+    <div class="bm_images">
+        {% load staticfiles %}
+        <img src="{% static 'image/img1.jpg' %}">
+        <img src="{% static 'image/img4.jpg' %}">
+        <img src="{% static 'image/img3.jpg' %}">
+    </div>
+    <div class="horiz_line2"></div>
+
+    <div id="past_coment_body">
+        {% include "coment_body.html" %}
+    </div>
+
+    <div class="send_coment">
+        <div class="sc_field">
+            <textarea id="coment_text"></textarea>
+        </div>
+        <div class="sc_button">
+            <a href="" id="sc_button" name={{obj.id}}>Send</a>
+        </div>
+    </div>
+    <div class="bm_pagination">
+        <ul>
+            {% for page in pagination_count %}
+            <li><a href="">{{page}}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endfor %}

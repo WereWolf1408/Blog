@@ -1,0 +1,52 @@
+{% load staticfiles %}
+<div>
+    <img src="{% static 'load/loader.gif' %}" class="progress">
+</div>
+<div class="user_authentication">
+    <div class="close_user_auth">
+        <a href="">X</a>
+    </div>
+    <div class="input_us_auth">
+        <input type="text" size="25" id="user_auth_log">
+        <input type="text" size="25" id="user_auth_pass">
+    </div>
+    <div class="label_us_auth">
+        <label id="user_auth_log_lab">Login</label>
+        <label id="user_auth_pass_lab">Password</label>
+    </div>
+    <div class="send_user_auth">
+        <a href="">Send</a>
+    </div>
+</div>
+
+<div class="user_registration">
+    <div class="block">
+        <div class="close"><a href="">X</a></div>
+    </div>
+    <input type="text" size="30" id="user_log">
+    <label>Login</label>
+    <input type="text" size="30" id="user_pass">
+    <label>Password</label>
+    <input type="text" size="30" id="user_conf_pass">
+    <label>Confirm password</label>
+    <input type="text" size="30" id="user_mail">
+    <label>Email</label>
+    <img src="" id="user_img">
+
+    <form action="demo_form.asp" id="upload_img">
+        <input type="file" name="pic" accept="image/*">
+    </form>
+    <label>Load avatar</label>
+    <a href="" id="send_us_reg">Send</a>
+</div>
+{% if user %}
+<div class="user_info">
+    <div class="user_info_img">
+        <img src="{% static 'image/img.jpg' %}">
+    </div>
+    <div class="user_info_text">
+        <span>User: {{user}}</span>
+        <a href="" id="logout">Log out</a>
+    </div>
+</div>
+{% endif %}
