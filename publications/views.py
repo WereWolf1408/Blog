@@ -6,6 +6,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from publications.models import Publication
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
+from django.views.decorators.csrf import csrf_protect
 
 
 class PublicationList(object):
@@ -46,7 +47,6 @@ class PublicationList(object):
            i += 1
        return mass
 
-
 def get_main_page(request):
     args = {}
     args['publication'] = PublicationList().get_pablishing_content(request)
@@ -61,6 +61,7 @@ def method_splitter(request, Get, Post):
     elif request.method == "POST" and Post is not None:
         return Post(request)
     raise Http404
+
 
 @cache_page(60 * 15)
 def get_page_post(request):
@@ -87,3 +88,9 @@ def get_page_get(request):
         return render_to_response('blog.html', args)
     except ValueError:
         return HttpResponse('value error')
+
+
+def hello(request):
+    if request.is_ajax():
+        return HttpResponse('ajax request')
+    return HttpResponse('simple request')

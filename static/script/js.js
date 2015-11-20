@@ -1,9 +1,33 @@
 /*обрабатывает события браузера такие как назатие на клавиши "вперед" "назад"
 back*/
+
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken')
+
 window.addEventListener('popstate', function(event) {
 	if(event.state == null){
 		console.log(url);
 		window.location.href = '/blog';
+
 	} else {
 		var url = event.state.url;
 		var data = event.state.data;
@@ -17,6 +41,7 @@ window.addEventListener('popstate', function(event) {
 				console.log(data);
 				$('.progress').css({"display": "none"})
 				$('#body_action').html(data);
+				history.pushState({url: 'blog/'}, null, "page");
 			},
 			beforeSend: function(){
 				$('.progress').css({"display": "block"})
@@ -28,19 +53,21 @@ window.addEventListener('popstate', function(event) {
 $('.pagination').click(function(event){
 	elem = event.target;
 	$.ajax({
-		url:'page',
+		url:'/blog/page/',
 		type:'POST',
 		data:{page:elem.text},
 		success:function(data){
 			console.log(data);
-			history.pushState({data: elem.text, url: 'blog/page'}, null, "page?page=" + elem.text);
+			history.pushState({data: elem.text, url: '/blog/page/'}, null, "page?page=" + elem.text);
 			$('.progress').css({"display": "none"})
 			$('#body_action').html(data);
 			$("html, body").animate({"scrollTop": $('#body_action').offset().top}, 0);
 		},
-		beforeSend: function(){
+		beforeSend: function(xhr, settings){
 			$('.progress').css({"display": "block"})
-			
+			if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            	xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        	}
 		}
 	})
 })
@@ -150,11 +177,13 @@ $('#logout').on('click', function(event){
 	return false;
 })
 
+
+
 $('#body_action').on('click', function(event){
 	if ($(event.target).html() == 'More'){
 		var pub_id = $(event.target).attr('name');
 		$.ajax({
-			url: "/body_more/",
+			url: "/blog/body_more/",
 			type: "POST",
 			data: {publication_id: pub_id},
 			success: function(data){
@@ -162,10 +191,13 @@ $('#body_action').on('click', function(event){
 				$('.progress').css({"display": "none"})
 				$('#body_action').html(data)
 				$("html, body").animate({"scrollTop": $('#body_action').offset().top}, 0);
-				history.pushState({data: pub_id, url: "body_more"}, null, 'body_more');
+				history.pushState({data: pub_id, url: "/blog/body_more/"}, null, 'body_more/');
 			},
-			beforeSend: function(){
+			beforeSend: function(xhr, settings){
 				$('.progress').css({"display": "block"})
+				if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            		xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        		}
 			}
 		})
 	}
@@ -214,7 +246,7 @@ $('#body_action').on('click', function(){
 		var pub_id = $('#sc_button').attr('name');
 		console.log('coment_send');
 		$.ajax({
-			url: "save_coment",
+			url: "save_coment/",
 			type: "POST",
 			data: {comentText: value, publication_id: pub_id},
 			success: function(data){
@@ -222,8 +254,11 @@ $('#body_action').on('click', function(){
 				console.log(data);
 				$('#past_coment_body').html(data)
 			},
-			beforeSend: function(){
+			beforeSend: function(xhr, settings){
 				$('.progress').css({"display": "block"})
+				if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            		xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        		}
 			}
 		})
 	}

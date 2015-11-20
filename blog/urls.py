@@ -15,9 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from example import views
+from publications import views as pub
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^animal', views.animal)
+    url(r'^blog/$', pub.get_main_page),
+    url(r'^blog/body_more/', include('coments.urls')),
+    url(r'^blog/page/', pub.method_splitter, {'Get': pub.get_page_get, 'Post': pub.get_page_post}),
+
+    # url(r'^blog/page', pub.method_splitter, {'Get': pub.get_page_get, 'Post': pub.get_page_post}),
 ]
